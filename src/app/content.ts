@@ -2,8 +2,16 @@ import "../manifest.json"
 import "../styles/content.scss"
 import { html, render } from "lit-html"
 import DomObserver, { EventType } from "./kintone/dom-observer"
-import { getPosts, SortOrder, sortPostElements } from "./kintone/space-thread"
+import {
+  getPosts,
+  SortOrder,
+  sortPostElements,
+  insertCommentsWrapperElement,
+  hideOriginPosts,
+  renderPosts,
+} from "./kintone/space-thread"
 
+const SORTONE_COMMENTS_WRAPPER_CLASSNAME = "sortone-comments-wrapper"
 console.log("hoge")
 
 const sayHello = (name: String) => {
@@ -20,5 +28,15 @@ document.addEventListener(EventType.COMMENT_COMPONENT_LOADED, (e) => {
   console.log("comment component loaded", targetEl)
   const postEls = getPosts(targetEl)
   console.log(postEls)
-  console.log(sortPostElements(postEls, SortOrder.LIKE_DESC))
+  hideOriginPosts(postEls)
+  const sortedPosts = sortPostElements(postEls, SortOrder.LIKE_DESC)
+  console.log(sortedPosts)
+
+  const wrapperEl = insertCommentsWrapperElement(
+    SORTONE_COMMENTS_WRAPPER_CLASSNAME
+  )
+  if (!wrapperEl) {
+    return
+  }
+  renderPosts(sortedPosts, wrapperEl)
 })
