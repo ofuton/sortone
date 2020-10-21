@@ -16,15 +16,27 @@ const SORTONE_COMMENTS_WRAPPER_CLASSNAME = "sortone-comments-wrapper"
 const domObserver = new DomObserver()
 domObserver.startCommentComponentObserver()
 
+let postEls: HTMLElement[]
+
 document.addEventListener(EventType.COMMENT_COMPONENT_LOADED, (e) => {
   renderDropdown()
 
   const targetEl = (e as CustomEvent).detail.element
   console.log("comment component loaded", targetEl)
-  const postEls = getPosts(targetEl)
+  postEls = getPosts(targetEl)
   console.log(postEls)
   hideOriginPosts(postEls)
-  const sortedPosts = sortPostElements(postEls, SortOrder.LIKE_DESC)
+  const wrapperEl = insertCommentsWrapperElement(
+    SORTONE_COMMENTS_WRAPPER_CLASSNAME
+  )
+  if (!wrapperEl) {
+    return
+  }
+  renderPosts(postEls, wrapperEl)
+})
+
+export const sortPost = (order: SortOrder) => {
+  const sortedPosts = sortPostElements(postEls, order)
   console.log(sortedPosts)
 
   const wrapperEl = insertCommentsWrapperElement(
@@ -34,4 +46,4 @@ document.addEventListener(EventType.COMMENT_COMPONENT_LOADED, (e) => {
     return
   }
   renderPosts(sortedPosts, wrapperEl)
-})
+}
