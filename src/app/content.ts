@@ -12,13 +12,6 @@ import {
 } from "./kintone/space-thread"
 
 const SORTONE_COMMENTS_WRAPPER_CLASSNAME = "sortone-comments-wrapper"
-console.log("hoge")
-
-const sayHello = (name: String) => {
-  return html`<h1>Hello, ${name}!!</h1>`
-}
-
-// render(sayHello('ofuton'), document.body);
 
 const domObserver = new DomObserver()
 domObserver.startCommentComponentObserver()
