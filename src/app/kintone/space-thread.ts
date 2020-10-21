@@ -35,10 +35,14 @@ export const insertCommentsWrapperElement = (
   return wrapperEl
 }
 
-export const hideOriginPosts = (commentElements: HTMLElement[]) => {
-  commentElements.forEach((el) => {
-    el.style.display = "none"
-  })
+export const hideOriginCommentComponent = () => {
+  const commentComponentEl = document.querySelector(
+    ".ocean-ui-comments-commentcomponent"
+  )
+  if (!commentComponentEl) {
+    return
+  }
+  ;(commentComponentEl as HTMLElement).style.display = "none"
 }
 
 export const renderPosts = (

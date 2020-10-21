@@ -7,8 +7,8 @@ import {
   SortOrder,
   sortPostElements,
   insertCommentsWrapperElement,
-  hideOriginPosts,
   renderPosts,
+  hideOriginCommentComponent,
 } from "./kintone/space-thread"
 
 const SORTONE_COMMENTS_WRAPPER_CLASSNAME = "sortone-comments-wrapper"
@@ -20,12 +20,14 @@ let postEls: HTMLElement[]
 
 document.addEventListener(EventType.COMMENT_COMPONENT_LOADED, (e) => {
   renderDropdown()
+  hideOriginCommentComponent()
 
   const targetEl = (e as CustomEvent).detail.element
   console.log("comment component loaded", targetEl)
+
   postEls = getPosts(targetEl)
   console.log(postEls)
-  hideOriginPosts(postEls)
+
   const wrapperEl = insertCommentsWrapperElement(
     SORTONE_COMMENTS_WRAPPER_CLASSNAME
   )

@@ -3,7 +3,6 @@ import { html, render } from "lit-html"
 import { sortPost } from "../content"
 import { SortOrder } from "../kintone/space-thread"
 
-const THREAD_BODY_CLASSNAME = "ocean-space-thread-body"
 const SORTONE_UI_DROPDOWN_PARNT_CLASSNAME = "sortone-ui-dropdown-parent"
 const SORTONE_UI_DROPDOWN_CLASSNAME = "sortone-ui-dropdown"
 const SORTONE_UI_SELECT_MENU_CLASSNAME = "sortone-ui-select-menu"
@@ -32,7 +31,9 @@ const onChangeMenu = {
 }
 
 const insertDropdownWrapper = () => {
-  const threadBody = document.getElementsByClassName(THREAD_BODY_CLASSNAME)[0]
+  const threadBody = document.getElementsByClassName(
+    "ocean-space-thread-body"
+  )[0]
   threadBody.className += ` ${SORTONE_UI_DROPDOWN_PARNT_CLASSNAME}`
 
   const element = document.createElement("div")
