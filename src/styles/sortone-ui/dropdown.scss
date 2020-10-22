@@ -11,18 +11,20 @@
 }
 
 .sortone-ui-select-menu {
+  position: relative;
   overflow: hidden;
   text-align: center;
 
-  min-width: 180px;
+  min-width: 200px;
 }
 
 .sortone-ui-select-menu select {
   width: 100%;
   padding-right: 1em;
-  padding: 8px 38px 8px 8px;
+  padding: 8px 38px 8px 12px;
   text-indent: 0.01px;
   text-overflow: ellipsis;
+  font-size: 14px;
   color: #666666;
   border: none;
   outline: none;
@@ -41,13 +43,13 @@
 .sortone-ui-select-menu {
   position: relative;
   border: 1px solid #bbbbbb;
-  border-radius: 2px;
+  border-radius: 4px;
   background: #ffffff;
 }
 
 .sortone-ui-select-menu::before {
   position: absolute;
-  top: 16px;
+  top: 15px;
   right: 14px;
   width: 0;
   height: 0;
@@ -59,6 +61,59 @@
   content: "";
 }
 
+.sortone-ui-select-menu-selected {
+  border-radius: 24px;
+  border: none;
+  background-color: #e8f0fe;
+
+  min-width: 210px;
+}
+
+.sortone-ui-select-menu-selected select {
+  padding: 8px 38px 8px 18px;
+  color: #1967d2;
+}
+
 .sortone-comments-wrapper {
   font-size: 14px;
+}
+
+// Cancel Button
+.sortone-ui-select-cancel {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  width: 24px;
+  height: 24px;
+  background-color: #2667D2;
+  border: none;
+  border-radius: 50%;
+}
+
+.sortone-ui-select-cancel:hover {
+  background-color: #3598db;
+}
+
+.sortone-ui-select-cancel:before,
+.sortone-ui-select-cancel:after {
+  position: absolute;
+  left: 11.3px;
+  top: 5px;
+  content: "";
+  height: 14px;
+  width: 2px;
+  background-color: #e8f0fe;
+}
+
+.sortone-ui-select-cancel:hover:before,
+.sortone-ui-select-cancel:hover:after {
+  background-color: #e8f0fe;
+}
+
+.sortone-ui-select-cancel:before {
+  transform: rotate(45deg);
+}
+
+.sortone-ui-select-cancel:after {
+  transform: rotate(-45deg);
 }
