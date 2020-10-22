@@ -8,6 +8,18 @@
   right: 0px;
   bottom: 0px;
   padding: 24px;
+  
+  z-index: 5;
+}
+
+.sortone-ui-dropdown-fixed {
+  position: fixed;
+  top: 50px;
+}
+
+.sortone-ui-dropdown-fixed .sortone-ui-select-menu {
+  box-shadow: 0px 1px 2px 0px rgba(60,64,67,0.3), 0px 1px 3px 1px rgba(60,64,67,0.15);
+  border: none;
 }
 
 .sortone-ui-select-menu {

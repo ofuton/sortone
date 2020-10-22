@@ -32,7 +32,6 @@ export const insertCommentsWrapperElement = (
   }
   const wrapperEl = document.createElement("div")
   wrapperEl.className = className
-  wrapperEl.style.border = "4px solid #cacaca"
   commentComponentEl.insertAdjacentElement("afterend", wrapperEl)
   return wrapperEl
 }

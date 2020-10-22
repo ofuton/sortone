@@ -3,6 +3,7 @@ import { html, render } from "lit-html"
 
 const SORTONE_UI_DROPDOWN_PARNT_CLASSNAME = "sortone-ui-dropdown-parent"
 const SORTONE_UI_DROPDOWN_CLASSNAME = "sortone-ui-dropdown"
+const SORTONE_UI_DROPDOWN_FIXED_CLASSNAME = "sortone-ui-dropdown-fixed"
 const SORTONE_UI_SELECT_ID = "sortone-ui-select"
 const SORTONE_UI_SELECT_MENU_CLASSNAME = "sortone-ui-select-menu"
 const SORTONE_UI_SELECT_MENU_SELECTED_CLASSNAME= "sortone-ui-select-menu-selected"
@@ -97,3 +98,23 @@ const insertDropdown_ = (
     </div>
   `
 }
+
+window.addEventListener("scroll", (e) => {
+  const commentForm = document.getElementsByClassName(
+    "ocean-ui-comments-commentform"
+  )[0]
+  if (!commentForm) {
+    return
+  }
+  const commentFormBottom = commentForm.getBoundingClientRect().bottom
+
+  const dropdownElement = document.getElementsByClassName(SORTONE_UI_DROPDOWN_CLASSNAME)[0]
+  if (!dropdownElement) {
+    return
+  }
+  if (0 >= commentFormBottom) {
+    dropdownElement.className += ` ${SORTONE_UI_DROPDOWN_FIXED_CLASSNAME}`
+  } else {
+    dropdownElement.classList.remove(SORTONE_UI_DROPDOWN_FIXED_CLASSNAME)
+  }
+});
