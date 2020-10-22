@@ -21,7 +21,7 @@ const onChangeMenu = {
       case "いいねが多い順":
         sortPost(SortOrder.LIKE_DESC)
         break
-      case "いいねが多い順":
+      case "いいねが少ない順":
         sortPost(SortOrder.LIKE_ASC)
         break
       default:
