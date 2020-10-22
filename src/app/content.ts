@@ -1,7 +1,11 @@
 import "../manifest.json"
 import "../styles/content.scss"
 import DomObserver, { EventType } from "./kintone/dom-observer"
-import { renderDropdown } from "./sortone-ui/dropdown"
+import {
+  DropdownState,
+  renderDropdown,
+  SORT_MENUS,
+} from "./sortone-ui/dropdown"
 import {
   getPosts,
   SortOrder,
@@ -9,9 +13,10 @@ import {
   insertCommentsWrapperElement,
   renderPosts,
   hideOriginCommentComponent,
+  SORTONE_COMMENTS_WRAPPER_CLASSNAME,
+  showOriginComponentComponent,
+  removeCommentsWrapperElement,
 } from "./kintone/space-thread"
-
-const SORTONE_COMMENTS_WRAPPER_CLASSNAME = "sortone-comments-wrapper"
 
 const domObserver = new DomObserver()
 domObserver.startCommentComponentObserver()
@@ -19,21 +24,16 @@ domObserver.startCommentComponentObserver()
 let postEls: HTMLElement[]
 
 document.addEventListener(EventType.COMMENT_COMPONENT_LOADED, (e) => {
-  renderDropdown()
+  renderDropdown(onChangeMenu)
 
   const targetEl = (e as CustomEvent).detail.element
-  console.log("comment component loaded", targetEl)
-
   postEls = getPosts(targetEl)
-  console.log(postEls)
 })
 
-export const sortPost = (order: SortOrder) => {
+const sortPost = (order: SortOrder) => {
   hideOriginCommentComponent()
 
   const sortedPosts = sortPostElements(postEls, order)
-  console.log(sortedPosts)
-
   const wrapperEl = insertCommentsWrapperElement(
     SORTONE_COMMENTS_WRAPPER_CLASSNAME
   )
@@ -41,4 +41,27 @@ export const sortPost = (order: SortOrder) => {
     return
   }
   renderPosts(sortedPosts, wrapperEl)
+}
+
+const onChangeMenu = {
+  handleEvent(e: any) {
+    console.log(
+      `onChangeMenu.Test: 「${SORT_MENUS[e.target.value]}」が選択されました`
+    )
+    DropdownState.selected = e.target.value as number
+    switch (SORT_MENUS[e.target.value]) {
+      case "------":
+        removeCommentsWrapperElement()
+        showOriginComponentComponent()
+        break
+      case "いいねが多い順":
+        sortPost(SortOrder.LIKE_DESC)
+        break
+      case "いいねが少ない順":
+        sortPost(SortOrder.LIKE_ASC)
+        break
+      default:
+        throw new Error("unsupported error")
+    }
+  },
 }

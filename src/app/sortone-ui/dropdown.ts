@@ -1,36 +1,21 @@
 import "../../styles/sortone-ui/dropdown.scss"
 import { html, render } from "lit-html"
-import { sortPost } from "../content"
-import { SortOrder } from "../kintone/space-thread"
 
 const SORTONE_UI_DROPDOWN_PARNT_CLASSNAME = "sortone-ui-dropdown-parent"
 const SORTONE_UI_DROPDOWN_CLASSNAME = "sortone-ui-dropdown"
 const SORTONE_UI_SELECT_MENU_CLASSNAME = "sortone-ui-select-menu"
 
-const menus = ["------", "いいねが多い順", "いいねが少ない順"]
-
-let selected = 0
-
-const onChangeMenu = {
-  handleEvent(e: any) {
-    console.log(
-      `onChangeMenu.Test: 「${menus[e.target.value]}」が選択されました`
-    )
-    selected = e.target.value
-    switch (menus[e.target.value]) {
-      case "いいねが多い順":
-        sortPost(SortOrder.LIKE_DESC)
-        break
-      case "いいねが少ない順":
-        sortPost(SortOrder.LIKE_ASC)
-        break
-      default:
-        break
-    }
-  },
+export const SORT_MENUS = ["------", "いいねが多い順", "いいねが少ない順"]
+export class DropdownState {
+  public static selected = 0
 }
 
-const insertDropdownWrapper = () => {
+export const renderDropdown = (onChangeMenu: { handleEvent(e: any): void }) => {
+  const dropdownWrapperElement = insertDropdownWrapper_()
+  render(insertDropdown_(onChangeMenu), dropdownWrapperElement)
+}
+
+const insertDropdownWrapper_ = () => {
   const threadBody = document.getElementsByClassName(
     "ocean-space-thread-body"
   )[0]
@@ -43,9 +28,12 @@ const insertDropdownWrapper = () => {
   return element
 }
 
-const insertDropdown = () => {
-  const optionTemplates = menus.map((menu, index) => {
-    return html`<option value="${index}" ?selected=${index === selected}>
+const insertDropdown_ = (onChangeMenu: { handleEvent(e: any): void }) => {
+  const optionTemplates = SORT_MENUS.map((menu, index) => {
+    return html`<option
+      value="${index}"
+      ?selected=${index === DropdownState.selected}
+    >
       ${menu}
     </option>`
   })
@@ -57,9 +45,4 @@ const insertDropdown = () => {
       </select>
     </div>
   `
-}
-
-export const renderDropdown = () => {
-  const dropdownWrapperElement = insertDropdownWrapper()
-  render(insertDropdown(), dropdownWrapperElement)
 }

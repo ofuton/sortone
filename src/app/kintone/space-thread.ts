@@ -1,3 +1,5 @@
+export const SORTONE_COMMENTS_WRAPPER_CLASSNAME = "sortone-comments-wrapper"
+
 export const getPosts = (
   targetCommentComponentEl: HTMLElement
 ): HTMLElement[] => {
@@ -35,6 +37,19 @@ export const insertCommentsWrapperElement = (
   return wrapperEl
 }
 
+export const removeCommentsWrapperElement = () => {
+  const commentComponentEl = document.querySelector(
+    `.${SORTONE_COMMENTS_WRAPPER_CLASSNAME}`
+  )
+  if (!commentComponentEl) {
+    return
+  }
+  if (!commentComponentEl.parentNode) {
+    return
+  }
+  commentComponentEl.parentNode.removeChild(commentComponentEl)
+}
+
 export const hideOriginCommentComponent = () => {
   const commentComponentEl = document.querySelector(
     ".ocean-ui-comments-commentcomponent"
@@ -43,6 +58,16 @@ export const hideOriginCommentComponent = () => {
     return
   }
   ;(commentComponentEl as HTMLElement).style.display = "none"
+}
+
+export const showOriginComponentComponent = () => {
+  const commentComponentEl = document.querySelector(
+    ".ocean-ui-comments-commentcomponent"
+  )
+  if (!commentComponentEl) {
+    return
+  }
+  ;(commentComponentEl as HTMLElement).style.removeProperty("display")
 }
 
 export const renderPosts = (
