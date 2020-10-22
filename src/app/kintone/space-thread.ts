@@ -4,7 +4,7 @@ export const getPosts = (
   targetCommentComponentEl: HTMLElement
 ): HTMLElement[] => {
   return Array.from(
-    targetCommentComponentEl.querySelectorAll(".ocean-ui-comments-commentbase")
+    targetCommentComponentEl.querySelectorAll(".ocean-ui-comments-post")
   )
 }
 
@@ -76,9 +76,7 @@ export const renderPosts = (
 ) => {
   container.append(
     ...postElements.map((el) => {
-      // ここに来る前にdisplay: noneが指定される可能性があるのでプロパティを消す
-      el.style.removeProperty("display")
-      return el
+      return el.cloneNode(true)
     })
   )
 }
