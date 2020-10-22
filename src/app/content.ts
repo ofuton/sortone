@@ -20,24 +20,17 @@ let postEls: HTMLElement[]
 
 document.addEventListener(EventType.COMMENT_COMPONENT_LOADED, (e) => {
   renderDropdown()
-  hideOriginCommentComponent()
 
   const targetEl = (e as CustomEvent).detail.element
   console.log("comment component loaded", targetEl)
 
   postEls = getPosts(targetEl)
   console.log(postEls)
-
-  const wrapperEl = insertCommentsWrapperElement(
-    SORTONE_COMMENTS_WRAPPER_CLASSNAME
-  )
-  if (!wrapperEl) {
-    return
-  }
-  renderPosts(postEls, wrapperEl)
 })
 
 export const sortPost = (order: SortOrder) => {
+  hideOriginCommentComponent()
+
   const sortedPosts = sortPostElements(postEls, order)
   console.log(sortedPosts)
 
