@@ -1,8 +1,10 @@
+export const SORTONE_COMMENTS_WRAPPER_CLASSNAME = "sortone-comments-wrapper"
+
 export const getPosts = (
   targetCommentComponentEl: HTMLElement
 ): HTMLElement[] => {
   return Array.from(
-    targetCommentComponentEl.querySelectorAll(".ocean-ui-comments-commentbase")
+    targetCommentComponentEl.querySelectorAll(".ocean-ui-comments-post")
   )
 }
 
@@ -30,9 +32,21 @@ export const insertCommentsWrapperElement = (
   }
   const wrapperEl = document.createElement("div")
   wrapperEl.className = className
-  wrapperEl.style.border = "4px solid #cacaca"
   commentComponentEl.insertAdjacentElement("afterend", wrapperEl)
   return wrapperEl
+}
+
+export const removeCommentsWrapperElement = () => {
+  const commentComponentEl = document.querySelector(
+    `.${SORTONE_COMMENTS_WRAPPER_CLASSNAME}`
+  )
+  if (!commentComponentEl) {
+    return
+  }
+  if (!commentComponentEl.parentNode) {
+    return
+  }
+  commentComponentEl.parentNode.removeChild(commentComponentEl)
 }
 
 export const hideOriginCommentComponent = () => {
@@ -45,15 +59,23 @@ export const hideOriginCommentComponent = () => {
   ;(commentComponentEl as HTMLElement).style.display = "none"
 }
 
+export const showOriginComponentComponent = () => {
+  const commentComponentEl = document.querySelector(
+    ".ocean-ui-comments-commentcomponent"
+  )
+  if (!commentComponentEl) {
+    return
+  }
+  ;(commentComponentEl as HTMLElement).style.removeProperty("display")
+}
+
 export const renderPosts = (
   postElements: HTMLElement[],
   container: HTMLElement
 ) => {
   container.append(
     ...postElements.map((el) => {
-      // ここに来る前にdisplay: noneが指定される可能性があるのでプロパティを消す
-      el.style.removeProperty("display")
-      return el
+      return el.cloneNode(true)
     })
   )
 }

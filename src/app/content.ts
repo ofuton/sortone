@@ -1,7 +1,13 @@
 import "../manifest.json"
 import "../styles/content.scss"
-import { html, render } from "lit-html"
 import DomObserver, { EventType } from "./kintone/dom-observer"
+import {
+  DropdownState,
+  renderDropdown,
+  resetDropdown,
+  showCancelButton,
+  SORT_MENUS,
+} from "./sortone-ui/dropdown"
 import {
   getPosts,
   SortOrder,
@@ -9,29 +15,27 @@ import {
   insertCommentsWrapperElement,
   renderPosts,
   hideOriginCommentComponent,
+  SORTONE_COMMENTS_WRAPPER_CLASSNAME,
+  showOriginComponentComponent,
+  removeCommentsWrapperElement,
 } from "./kintone/space-thread"
-
-const SORTONE_COMMENTS_WRAPPER_CLASSNAME = "sortone-comments-wrapper"
-console.log("hoge")
-
-const sayHello = (name: String) => {
-  return html`<h1>Hello, ${name}!!</h1>`
-}
-
-// render(sayHello('ofuton'), document.body);
 
 const domObserver = new DomObserver()
 domObserver.startCommentComponentObserver()
 
-document.addEventListener(EventType.COMMENT_COMPONENT_LOADED, (e) => {
-  const targetEl = (e as CustomEvent).detail.element
-  console.log("comment component loaded", targetEl)
-  const postEls = getPosts(targetEl)
-  console.log(postEls)
-  hideOriginCommentComponent()
-  const sortedPosts = sortPostElements(postEls, SortOrder.LIKE_DESC)
-  console.log(sortedPosts)
+let postEls: HTMLElement[]
 
+document.addEventListener(EventType.COMMENT_COMPONENT_LOADED, (e) => {
+  renderDropdown(onChangeMenu, onClickClose)
+
+  const targetEl = (e as CustomEvent).detail.element
+  postEls = getPosts(targetEl)
+})
+
+const sortPost = (order: SortOrder) => {
+  hideOriginCommentComponent()
+
+  const sortedPosts = sortPostElements(postEls, order)
   const wrapperEl = insertCommentsWrapperElement(
     SORTONE_COMMENTS_WRAPPER_CLASSNAME
   )
@@ -39,4 +43,33 @@ document.addEventListener(EventType.COMMENT_COMPONENT_LOADED, (e) => {
     return
   }
   renderPosts(sortedPosts, wrapperEl)
-})
+}
+
+const onChangeMenu = {
+  handleEvent(e: any) {
+    console.log(
+      `onChangeMenu.Test: 「${SORT_MENUS[e.target.value]}」が選択されました`
+    )
+    DropdownState.selected = e.target.value
+    showCancelButton()
+    switch (SORT_MENUS[e.target.value]) {
+      case "いいねが多い順":
+        sortPost(SortOrder.LIKE_DESC)
+        break
+      case "いいねが少ない順":
+        sortPost(SortOrder.LIKE_ASC)
+        break
+      default:
+        throw new Error("unsupported error")
+    }
+  },
+}
+
+const onClickClose = {
+  handleEvent(e: any) {
+    console.log(`onClickClose.Test: 「キャンセル」がクリックされました`)
+    removeCommentsWrapperElement()
+    showOriginComponentComponent()
+    resetDropdown()
+  },
+}

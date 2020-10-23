@@ -1,0 +1,132 @@
+.sortone-ui-dropdown-parent {
+  position: relative;
+  min-height: 100px;
+}
+
+.sortone-ui-dropdown {
+  position: absolute;
+  right: 0px;
+  bottom: 0px;
+  padding: 24px;
+
+  z-index: 5;
+}
+
+.sortone-ui-dropdown-fixed {
+  position: fixed;
+  top: 50px;
+}
+
+.sortone-ui-dropdown-fixed .sortone-ui-select-menu {
+  box-shadow: 0px 1px 2px 0px rgba(60, 64, 67, 0.3),
+    0px 1px 3px 1px rgba(60, 64, 67, 0.15);
+  border: none;
+}
+
+.sortone-ui-select-menu {
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+
+  min-width: 200px;
+}
+
+.sortone-ui-select-menu select {
+  width: 100%;
+  padding-right: 1em;
+  padding: 8px 38px 8px 12px;
+  text-indent: 0.01px;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  color: #666666;
+  border: none;
+  outline: none;
+  background: transparent;
+  background-image: none;
+  box-shadow: none;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+.sortone-ui-select-menu select::-ms-expand {
+  display: none;
+}
+
+.sortone-ui-select-menu {
+  position: relative;
+  border: 1px solid #bbbbbb;
+  border-radius: 4px;
+  background: #ffffff;
+}
+
+.sortone-ui-select-menu::before {
+  position: absolute;
+  top: 15px;
+  right: 14px;
+  width: 0;
+  height: 0;
+  padding: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #666666;
+  pointer-events: none;
+  content: "";
+}
+
+.sortone-ui-select-menu-selected {
+  border-radius: 24px;
+  border: none;
+  background-color: #e8f0fe;
+
+  min-width: 210px;
+}
+
+.sortone-ui-select-menu-selected select {
+  padding: 8px 38px 8px 18px;
+  color: #1967d2;
+}
+
+.sortone-comments-wrapper {
+  font-size: 14px;
+}
+
+// Cancel Button
+.sortone-ui-select-cancel {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  width: 24px;
+  height: 24px;
+  background-color: #2667d2;
+  border: none;
+  border-radius: 50%;
+}
+
+.sortone-ui-select-cancel:hover {
+  background-color: #3598db;
+}
+
+.sortone-ui-select-cancel:before,
+.sortone-ui-select-cancel:after {
+  position: absolute;
+  left: 11.3px;
+  top: 5px;
+  content: "";
+  height: 14px;
+  width: 2px;
+  background-color: #e8f0fe;
+}
+
+.sortone-ui-select-cancel:hover:before,
+.sortone-ui-select-cancel:hover:after {
+  background-color: #e8f0fe;
+}
+
+.sortone-ui-select-cancel:before {
+  transform: rotate(45deg);
+}
+
+.sortone-ui-select-cancel:after {
+  transform: rotate(-45deg);
+}
