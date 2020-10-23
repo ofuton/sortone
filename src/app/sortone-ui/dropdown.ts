@@ -6,7 +6,8 @@ const SORTONE_UI_DROPDOWN_CLASSNAME = "sortone-ui-dropdown"
 const SORTONE_UI_DROPDOWN_FIXED_CLASSNAME = "sortone-ui-dropdown-fixed"
 const SORTONE_UI_SELECT_ID = "sortone-ui-select"
 const SORTONE_UI_SELECT_MENU_CLASSNAME = "sortone-ui-select-menu"
-const SORTONE_UI_SELECT_MENU_SELECTED_CLASSNAME= "sortone-ui-select-menu-selected"
+const SORTONE_UI_SELECT_MENU_SELECTED_CLASSNAME =
+  "sortone-ui-select-menu-selected"
 const SORTONE_UI_CANCEL_BUTTON_ID = "sortone-ui-select-cancel"
 
 export const SORT_MENUS = ["いいねが多い順", "いいねが少ない順"]
@@ -56,7 +57,9 @@ const hideCancelButton_ = () => {
     SORTONE_UI_SELECT_MENU_CLASSNAME
   )[0]
   if (selectMenuElement) {
-    selectMenuElement.classList.remove(SORTONE_UI_SELECT_MENU_SELECTED_CLASSNAME)
+    selectMenuElement.classList.remove(
+      SORTONE_UI_SELECT_MENU_SELECTED_CLASSNAME
+    )
   }
 }
 
@@ -108,7 +111,9 @@ window.addEventListener("scroll", (e) => {
   }
   const commentFormBottom = commentForm.getBoundingClientRect().bottom
 
-  const dropdownElement = document.getElementsByClassName(SORTONE_UI_DROPDOWN_CLASSNAME)[0]
+  const dropdownElement = document.getElementsByClassName(
+    SORTONE_UI_DROPDOWN_CLASSNAME
+  )[0]
   if (!dropdownElement) {
     return
   }
@@ -117,4 +122,4 @@ window.addEventListener("scroll", (e) => {
   } else {
     dropdownElement.classList.remove(SORTONE_UI_DROPDOWN_FIXED_CLASSNAME)
   }
-});
+})

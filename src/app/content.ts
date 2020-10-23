@@ -67,9 +67,7 @@ const onChangeMenu = {
 
 const onClickClose = {
   handleEvent(e: any) {
-    console.log(
-      `onClickClose.Test: 「キャンセル」がクリックされました`
-    )
+    console.log(`onClickClose.Test: 「キャンセル」がクリックされました`)
     removeCommentsWrapperElement()
     showOriginComponentComponent()
     resetDropdown()
