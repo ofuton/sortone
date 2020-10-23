@@ -59,6 +59,12 @@ const onChangeMenu = {
       case "いいねが少ない順":
         sortPost(SortOrder.LIKE_ASC)
         break
+      case "日付が新しい順":
+        sortPost(SortOrder.CREATED_DESC)
+        break
+      case "返信が多い順":
+        sortPost(SortOrder.REPLY_DESC)
+        break
       default:
         throw new Error("unsupported error")
     }
