@@ -86,6 +86,10 @@ const sortInner_ = (postElements: HTMLElement[], sortOrder: SortOrder) => {
       return sortLikeAsc_(postElements)
     case SortOrder.LIKE_DESC:
       return sortLikeDesc_(postElements)
+    case SortOrder.CREATED_DESC:
+      return sortCreatedDesc_(postElements)
+    case SortOrder.REPLY_DESC:
+      return sortReplyDesc_(postElements)
     default:
       throw new Error("unsupported error")
   }
@@ -119,6 +123,44 @@ const sortLikeDesc_ = (postElements: HTMLElement[]) => {
   })
 }
 
+const sortCreatedDesc_ = (postElements: HTMLElement[]) => {
+  return postElements.sort((a, b) => {
+    const createdAtA = extractCreatedAt_(a)
+    const createdAtB = extractCreatedAt_(b)
+    if (createdAtA === null || createdAtB === null) {
+      if (createdAtA !== null) {
+        return 1
+      } else if (createdAtA === createdAtB) {
+        return 0
+      } else {
+        return -1
+      }
+    } else {
+      if (createdAtA < createdAtB) {
+        return 1
+      } else if (createdAtA === createdAtB) {
+        return 0
+      } else {
+        return -1
+      }
+    }
+  })
+}
+
+const sortReplyDesc_ = (postElements: HTMLElement[]) => {
+  return postElements.sort((a, b) => {
+    const replyCountA = extractReply_(a)
+    const replyCountB = extractReply_(b)
+    if (replyCountA < replyCountB) {
+      return 1
+    } else if (replyCountA === replyCountB) {
+      return 0
+    } else {
+      return -1
+    }
+  })
+}
+
 const extractLikeCount_ = (element: HTMLElement): Number => {
   const likeCountTextEl = element.querySelector(
     ".ocean-ui-comments-commentbase-like-count-text"
@@ -133,9 +175,63 @@ const extractLikeCount_ = (element: HTMLElement): Number => {
   return parseInt(likeCountText)
 }
 
+const extractReply_ = (element: HTMLElement): Number => {
+  const commentHolderEl = document.querySelector(
+    ".ocean-ui-comments-post-commentholder"
+  )
+  if (!commentHolderEl) {
+    return 0
+  }
+  return commentHolderEl.childElementCount
+}
+
+// 0詰め
+const fill = (text: string | number) => {
+  return ("0" + text).slice(-2)
+}
+
+const extractCreatedAt_ = (element: HTMLElement): string | null => {
+  const createdAtLinkEl = element.querySelector(
+    ".ocean-ui-comments-commentbase-time"
+  )
+  if (!createdAtLinkEl) {
+    return null
+  }
+  // パターン1 XX:XX
+  const p1 = /(?<hours>\d{2}|\d):(?<minutes>\d{2}|\d)/
+  // パターン2 XX/XX XX:XX
+  const p2 = /(?<month>\d{2}|\d)\/(?<day>\d{2}|\d) (?<hours>\d{2}|\d):(?<minutes>\d{2}|\d)/
+  // パターン3 XXXX/XX/XX XX:XX
+  const p3 = /(?<year>\d{4})\/(?<month>\d{2}|\d)\/(?<day>\d{2}|\d) (?<hours>\d{2}|\d):(?<minutes>\d{2}|\d)/
+  const dateText = (createdAtLinkEl as HTMLElement).innerText
+  const now = new Date()
+  if (dateText.match(p3)) {
+    const result = dateText.match(p3)!
+    const g = result.groups!
+    return `${g.year}/${fill(g.month)}/${fill(g.day)} ${fill(g.hours)}:${fill(
+      g.minutes
+    )}`
+  } else if (dateText.match(p2)) {
+    const result = dateText.match(p2)!
+    const g = result.groups!
+    return `${now.getFullYear()}/${fill(g.month)}/${fill(g.day)} ${fill(
+      g.hours
+    )}:${fill(g.minutes)}`
+  } else if (dateText.match(p1)) {
+    const result = dateText.match(p1)!
+    const g = result.groups!
+    return `${now.getFullYear()}/${fill(now.getMonth() + 1)}/${fill(
+      now.getDate()
+    )} ${fill(g.hours)}:${fill(g.minutes)}`
+  }
+  return null
+}
+
 export const SortOrder = {
   LIKE_ASC: "like_asc",
   LIKE_DESC: "like_desc",
+  CREATED_DESC: "created_desc",
+  REPLY_DESC: "reply_desc",
 } as const
 
 export type SortOrder = typeof SortOrder[keyof typeof SortOrder]

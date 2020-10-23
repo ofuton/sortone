@@ -10,7 +10,12 @@ const SORTONE_UI_SELECT_MENU_SELECTED_CLASSNAME =
   "sortone-ui-select-menu-selected"
 const SORTONE_UI_CANCEL_BUTTON_ID = "sortone-ui-select-cancel"
 
-export const SORT_MENUS = ["いいねが多い順", "いいねが少ない順"]
+export const SORT_MENUS = [
+  "いいねが多い順",
+  "いいねが少ない順",
+  "日付が新しい順",
+  "返信が多い順",
+]
 export class DropdownState {
   public static selected = 0
 }
