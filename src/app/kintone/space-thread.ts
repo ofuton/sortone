@@ -176,7 +176,7 @@ const extractLikeCount_ = (element: HTMLElement): Number => {
 }
 
 const extractReply_ = (element: HTMLElement): Number => {
-  const commentHolderEl = document.querySelector(
+  const commentHolderEl = element.querySelector(
     ".ocean-ui-comments-post-commentholder"
   )
   if (!commentHolderEl) {
