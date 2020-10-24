@@ -46,34 +46,25 @@ const sortPost = (order: SortOrder) => {
 }
 
 const onChangeMenu = {
-  handleEvent(e: any) {
-    console.log(
-      `onChangeMenu.Test: 「${SORT_MENUS[e.target.value]}」が選択されました`
-    )
-    DropdownState.selected = e.target.value
+  handleEvent(e: InputEvent) {
+    if (!e.target) {
+      return
+    }
+    const selectedValue = (e.target as HTMLInputElement).value
+    // DropdownState.selected = selectedValue
     showCancelButton()
-    switch (SORT_MENUS[e.target.value]) {
-      case "いいねが多い順":
-        sortPost(SortOrder.LIKE_DESC)
-        break
-      case "いいねが少ない順":
-        sortPost(SortOrder.LIKE_ASC)
-        break
-      case "日付が新しい順":
-        sortPost(SortOrder.CREATED_DESC)
-        break
-      case "返信が多い順":
-        sortPost(SortOrder.REPLY_DESC)
-        break
-      default:
-        throw new Error("unsupported error")
+
+    if (SORT_MENUS.some((menu) => menu.sortType === selectedValue)) {
+      // ↑でSORT_MENUSにあるかどうか見ているので下のキャストは必ず成功するはず
+      sortPost(selectedValue as SortOrder)
+    } else {
+      throw new Error("unsupported error")
     }
   },
 }
 
 const onClickClose = {
   handleEvent(e: any) {
-    console.log(`onClickClose.Test: 「キャンセル」がクリックされました`)
     removeCommentsWrapperElement()
     showOriginComponentComponent()
     resetDropdown()
