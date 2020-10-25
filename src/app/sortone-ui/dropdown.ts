@@ -4,6 +4,7 @@ import { SortOrder } from "../kintone/space-thread"
 
 const SORTONE_UI_DROPDOWN_PARENT_CLASSNAME = "sortone-ui-dropdown-parent"
 const SORTONE_UI_DROPDOWN_CLASSNAME = "sortone-ui-dropdown"
+const SORTONE_UI_DROPDOWN_OPTIONS_CLASSNAME = "sortone-ui-dropdown-options"
 const SORTONE_UI_DROPDOWN_FIXED_CLASSNAME = "sortone-ui-dropdown-fixed"
 const SORTONE_UI_SELECT_ID = "sortone-ui-select"
 const SORTONE_UI_SELECT_MENU_CLASSNAME = "sortone-ui-select-menu"
@@ -24,12 +25,12 @@ export class DropdownState {
   static selected: SortOrder | null = null
 }
 
-export const renderDropdown = (
-  onChangeMenu: { handleEvent(e: any): void },
-  onClickClose: { handleEvent(e: any): void }
+export const renderDropdownOptions = (
+  onChangeMenu: (e: InputEvent) => void,
+  onClickClose: (e: InputEvent) => void,
+  wrapperElement: HTMLElement
 ) => {
-  const dropdownWrapperElement = insertDropdownWrapper_()
-  render(insertDropdown_(onChangeMenu, onClickClose), dropdownWrapperElement)
+  render(makeDropdownOptions_(onChangeMenu, onClickClose), wrapperElement)
 }
 
 export const resetDropdown = () => {
@@ -72,7 +73,7 @@ const hideCancelButton_ = () => {
   }
 }
 
-const insertDropdownWrapper_ = () => {
+export const insertDropdownWrapper = () => {
   const threadBody = document.getElementsByClassName(
     "ocean-space-thread-body"
   )[0]
@@ -85,15 +86,26 @@ const insertDropdownWrapper_ = () => {
   return element
 }
 
-const insertDropdown_ = (
-  onChangeMenu: { handleEvent(e: any): void },
-  onClickClose: { handleEvent(e: any): void }
+const makeDropdownOptions_ = (
+  onChangeMenu: (e: InputEvent) => void,
+  onClickClose: (e: InputEvent) => void
 ) => {
   const optionTemplates = SORT_MENUS.map((menu) => {
     if (menu.sortType === null) {
-      return html`<option selected disabled>${menu.label}</option>`
+      return html`<option
+        class="${SORTONE_UI_DROPDOWN_OPTIONS_CLASSNAME}"
+        selected
+        disabled
+      >
+        ${menu.label}
+      </option>`
     } else {
-      return html`<option value=${menu.sortType}>${menu.label}</option>`
+      return html`<option
+        class="${SORTONE_UI_DROPDOWN_OPTIONS_CLASSNAME}"
+        value=${menu.sortType}
+      >
+        ${menu.label}
+      </option>`
     }
   })
 
