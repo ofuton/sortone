@@ -235,3 +235,6 @@ export const SortOrder = {
 } as const
 
 export type SortOrder = typeof SortOrder[keyof typeof SortOrder]
+
+export const isSortOrder = (something: any): something is SortOrder =>
+  !!something

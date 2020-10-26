@@ -1,6 +1,6 @@
 import "../../styles/sortone-ui/dropdown.scss"
 import { html, render } from "lit-html"
-import { SortOrder } from "../kintone/space-thread"
+import { SortOrder, isSortOrder } from "../kintone/space-thread"
 
 const SORTONE_UI_DROPDOWN_PARENT_CLASSNAME = "sortone-ui-dropdown-parent"
 const SORTONE_UI_DROPDOWN_CLASSNAME = "sortone-ui-dropdown"
@@ -28,17 +28,32 @@ export class DropdownState {
 export const renderDropdownOptions = (
   onChangeMenu: (e: InputEvent) => void,
   onClickClose: (e: InputEvent) => void,
-  wrapperElement: HTMLElement
+  wrapperElement: HTMLElement,
+  initialSortOrder: SortOrder | null
 ) => {
-  render(makeDropdownOptions_(onChangeMenu, onClickClose), wrapperElement)
+  render(
+    makeDropdownOptions_(onChangeMenu, onClickClose, initialSortOrder),
+    wrapperElement
+  )
 }
 
 export const resetDropdown = () => {
-  const selectElement = <HTMLSelectElement>(
-    document.getElementById(SORTONE_UI_SELECT_ID)
-  )
-  selectElement.selectedIndex = 0
-  hideCancelButton_()
+  if (selectOption(0)) {
+    hideCancelButton_()
+  }
+}
+
+/**
+ * select出来たらtrue
+ * @param option
+ */
+export const selectOption = (index: number): boolean => {
+  const selectElement = document.getElementById(SORTONE_UI_SELECT_ID)
+  if (!selectElement) {
+    return false
+  }
+  ;(selectElement as HTMLSelectElement).selectedIndex = index
+  return true
 }
 
 export const showCancelButton = () => {
@@ -88,13 +103,14 @@ export const insertDropdownWrapper = () => {
 
 const makeDropdownOptions_ = (
   onChangeMenu: (e: InputEvent) => void,
-  onClickClose: (e: InputEvent) => void
+  onClickClose: (e: InputEvent) => void,
+  initialSortOrder: SortOrder | null
 ) => {
   const optionTemplates = SORT_MENUS.map((menu) => {
     if (menu.sortType === null) {
       return html`<option
         class="${SORTONE_UI_DROPDOWN_OPTIONS_CLASSNAME}"
-        selected
+        ?selected=${initialSortOrder === null}
         disabled
       >
         ${menu.label}
@@ -103,6 +119,7 @@ const makeDropdownOptions_ = (
       return html`<option
         class="${SORTONE_UI_DROPDOWN_OPTIONS_CLASSNAME}"
         value=${menu.sortType}
+        ?selected=${initialSortOrder === menu.sortType}
       >
         ${menu.label}
       </option>`
