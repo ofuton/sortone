@@ -8,6 +8,7 @@ import {
   showCancelButton,
   SORT_MENUS,
   insertDropdownWrapper,
+  selectOption,
 } from "./sortone-ui/dropdown"
 import {
   getPosts,
@@ -19,7 +20,9 @@ import {
   SORTONE_COMMENTS_WRAPPER_CLASSNAME,
   showOriginComponentComponent,
   removeCommentsWrapperElement,
+  isSortOrder,
 } from "./kintone/space-thread"
+import { saveSelectedOption, loadSelectedOption } from "./storage/local-storage"
 
 const domObserver = new DomObserver()
 domObserver.startCommentComponentObserver()
@@ -27,17 +30,36 @@ domObserver.startCommentComponentObserver()
 let postEls: HTMLElement[]
 
 document.addEventListener(EventType.COMMENT_COMPONENT_LOADED, (e) => {
-  const wrapperEl = insertDropdownWrapper()
-  renderDropdownOptions(onChangeMenu, onClickClose, wrapperEl)
-
   const targetEl = (e as CustomEvent).detail.element
   postEls = getPosts(targetEl)
+  loadSelectedOption((selectedOption) => {
+    const wrapperEl = insertDropdownWrapper()
+    if (selectedOption !== null) {
+      const index = SORT_MENUS.findIndex(
+        (menu) => menu.sortType === selectedOption
+      )
+      if (index >= 0) {
+        renderDropdownOptions(
+          onChangeMenu_,
+          onClickClose_,
+          wrapperEl,
+          selectedOption
+        )
+        // FIXME: renderしたときによしなにキャンセルボタンも出したい
+        showCancelButton()
+        renderSortedPosts(postEls, selectedOption)
+        return
+      }
+    } else {
+      renderDropdownOptions(onChangeMenu_, onClickClose_, wrapperEl, null)
+    }
+  })
 })
 
-const sortPost = (order: SortOrder) => {
+const renderSortedPosts = (postElements: HTMLElement[], order: SortOrder) => {
   hideOriginCommentComponent()
 
-  const sortedPosts = sortPostElements(postEls, order)
+  const sortedPosts = sortPostElements(postElements, order)
   const wrapperEl = insertCommentsWrapperElement(
     SORTONE_COMMENTS_WRAPPER_CLASSNAME
   )
@@ -47,23 +69,21 @@ const sortPost = (order: SortOrder) => {
   renderPosts(sortedPosts, wrapperEl)
 }
 
-const onChangeMenu = (e: InputEvent) => {
+const onChangeMenu_ = (e: InputEvent) => {
   if (!e.target) {
     return
   }
   const selectedValue = (e.target as HTMLInputElement).value
-  // DropdownState.selected = selectedValue
-  showCancelButton()
-
-  if (SORT_MENUS.some((menu) => menu.sortType === selectedValue)) {
-    // ↑でSORT_MENUSにあるかどうか見ているので下のキャストは必ず成功するはず
-    sortPost(selectedValue as SortOrder)
-  } else {
+  if (!isSortOrder(selectedValue)) {
     throw new Error("unsupported error")
   }
+  saveSelectedOption(selectedValue)
+  showCancelButton()
+
+  renderSortedPosts(postEls, selectedValue)
 }
 
-const onClickClose = (e: InputEvent) => {
+const onClickClose_ = (e: InputEvent) => {
   removeCommentsWrapperElement()
   showOriginComponentComponent()
   resetDropdown()

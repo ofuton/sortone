@@ -5,7 +5,8 @@ test("SORT_MENUSで定義されているものが描画される", () => {
   renderDropdownOptions(
     (e) => {},
     (e) => {},
-    document.body
+    document.body,
+    null
   )
   const dropdownEl = document.body.querySelector(".sortone-ui-select-menu")
   console.log(dropdownEl)
