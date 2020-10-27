@@ -1,6 +1,10 @@
 import "../../styles/sortone-ui/dropdown.scss"
 import { html, render } from "lit-html"
 import { SortOrder, isSortOrder } from "../kintone/space-thread"
+import {
+  saveSelectedOption,
+  removeSelectedOption,
+} from "../storage/local-storage"
 
 const SORTONE_UI_DROPDOWN_PARENT_CLASSNAME = "sortone-ui-dropdown-parent"
 const SORTONE_UI_DROPDOWN_CLASSNAME = "sortone-ui-dropdown"
@@ -39,6 +43,7 @@ export const renderDropdownOptions = (
 
 export const resetDropdown = () => {
   if (selectOption(0)) {
+    removeSelectedOption()
     hideCancelButton_()
   }
 }

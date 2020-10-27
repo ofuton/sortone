@@ -19,3 +19,7 @@ export const saveSelectedOption = (selectedOption: SortOrder) => {
     localStorage.setItem(SORTONE_SELECTED_OPTION, selectedOption)
   }
 }
+
+export const removeSelectedOption = () => {
+  localStorage.removeItem(SORTONE_SELECTED_OPTION)
+}
