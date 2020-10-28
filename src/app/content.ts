@@ -32,6 +32,7 @@ let postEls: HTMLElement[]
 document.addEventListener(EventType.COMMENT_COMPONENT_LOADED, (e) => {
   const targetEl = (e as CustomEvent).detail.element
   postEls = getPosts(targetEl)
+  console.log(postEls)
   loadSelectedOption((selectedOption) => {
     const wrapperEl = insertDropdownWrapper()
     if (selectedOption !== null) {
@@ -70,9 +71,14 @@ const renderSortedPosts = (postElements: HTMLElement[], order: SortOrder) => {
 }
 
 const onChangeMenu_ = (e: InputEvent) => {
+  const commentComponentEl = document.querySelector(
+    ".ocean-ui-comments-commentcomponent"
+  ) as HTMLElement
+  postEls = getPosts(commentComponentEl)
   if (!e.target) {
     return
   }
+  console.log(postEls)
   const selectedValue = (e.target as HTMLInputElement).value
   if (!isSortOrder(selectedValue)) {
     throw new Error("unsupported error")
