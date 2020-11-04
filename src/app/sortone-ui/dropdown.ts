@@ -72,7 +72,7 @@ export const showCancelButton = () => {
     SORTONE_UI_SELECT_MENU_CLASSNAME
   )[0]
   if (selectMenuElement) {
-    selectMenuElement.className += ` ${SORTONE_UI_SELECT_MENU_SELECTED_CLASSNAME}`
+    selectMenuElement.classList.add(SORTONE_UI_SELECT_MENU_SELECTED_CLASSNAME)
   }
 }
 
@@ -97,7 +97,7 @@ export const insertDropdownWrapper = () => {
   const threadBody = document.getElementsByClassName(
     "ocean-space-thread-body"
   )[0]
-  threadBody.className += ` ${SORTONE_UI_DROPDOWN_PARENT_CLASSNAME}`
+  threadBody.classList.add(SORTONE_UI_DROPDOWN_PARENT_CLASSNAME)
 
   const element = document.createElement("div")
   element.className = SORTONE_UI_DROPDOWN_CLASSNAME
@@ -164,7 +164,7 @@ window.addEventListener("scroll", (e) => {
     return
   }
   if (0 >= commentFormBottom) {
-    dropdownElement.className += ` ${SORTONE_UI_DROPDOWN_FIXED_CLASSNAME}`
+    dropdownElement.classList.add(SORTONE_UI_DROPDOWN_FIXED_CLASSNAME)
   } else {
     dropdownElement.classList.remove(SORTONE_UI_DROPDOWN_FIXED_CLASSNAME)
   }
